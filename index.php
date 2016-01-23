@@ -236,9 +236,9 @@
             
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
-                    <b>Version</b> 2.3.0
+                    <b>Version</b> 0.1.0
                 </div>
-                <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+                <strong><a href="http://almsaeedstudio.com">DashMaxPi</a>.</strong> Open Source.
             </footer>
                        
             <?php include("includes/footer.php"); ?>
