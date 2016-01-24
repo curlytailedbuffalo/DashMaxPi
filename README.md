@@ -6,9 +6,36 @@ A lighttpd PHP dashboard for the raspberry pi.
 
 This is a small dhasboard that lets you see the status of services running on your Raspberry Pi. Simply set a username and password to access the dashboard and then add the names of the services you wish to keep track of. It also shows the ping time from your RPI to google.com.
 
+##Requirements
+
+ 1. Raspberry pi with Raspbian
+ 2. Web server installed with php - tested with lighttpd
+ 2. A copy of the repository somewhere in your web root.
+
+##Installation
+###Step 0 - Raspbian
+I will assume that anyone setting this up already knows how to install and configure a base setup of Raspbian (wheezy).
+###Step 1 - Lighttpd and PHP
+Once that is all set up you need lighttpd installed with php.
+####Lighttpd
+    sudo apt-get install lighttpd
+####PHP
+    sudo apt-get install php5-common php5-cgi php5
+###Step 3 - DashMaxPi
+    sudo git clone https://github.com/curlytailedbuffalo/DashMaxPi.git /www/html/dashmax
+###Step 4 - Test
+ - To make any changes to the Lighttpd configuration the file can be found at  **/etc/lighttpd/lighttpd.conf** but no changes should be necessary on a clean install.
+ - To reload Lighttpd 
+
+        sudo service lighttpd restart
+        
+To test visit http://pi-ip-address/dashmax
+- username: admin
+- pass: <blank>
+    
 ##Login Screen
 You set your username and password in the config file.
-//includes/config/config.php
+/includes/config/config.php
 
 **NOTE**
 For security you will store an encrypted hash of your password in the config file. To do this you must go to /createPassword.php in your browser. You can then enter the password you would like to use and it will give you the hashed password you must store in the config file. It also shows you an example of what your config file should look like..
