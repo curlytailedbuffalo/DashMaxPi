@@ -15,7 +15,7 @@
         removeFromServiceList($_POST["dropservice"]);
     }
     
-    $service_list = getServiceList();
+    $service_list = getServiceList("includes");
     
     $google_ping_time = getGooglePing();
     

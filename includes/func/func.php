@@ -46,7 +46,7 @@ function isLoggedIn(){
     
 }
 
-function getServiceList(){
+function getServiceList($alt = ".."){
 
     $myfile = fopen("includes/config/serviceList.txt", "r") or die("Unable to open file!");
     $myFileContents = fread($myfile,filesize("includes/config/serviceList.txt"));
