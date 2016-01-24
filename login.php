@@ -31,7 +31,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 
 						 <div class="login-box">
 							  <div class="login-logo">
-								<a href="../../index2.html"><b>Admin Login</b></a>
+								<a href="#"><b>Admin Login</b></a>
 							  </div><!-- /.login-logo -->
 							  <div class="login-box-body">
 							  <?php if ($_SESSION["loggedIn"] == true){ ?>

@@ -1,8 +1,9 @@
 <?php
 
     $mainConfig = (object)[
-        'username' => 'theking7426',
-        'password' => '$2y$10$T10gqXhi1cgVFeMYxdOIbOcbbd7dsh5X26BNp0XgGhlck2Q1mo1li'
+        'username'      =>  'admin',
+        'password'      =>  '$2y$10$0/EiTIHdfkZFonAes3lHxuqOv6f64gzfD3BFrwTbq98EBu3lA00Rq',
+        'enable_ping'   =>  true
     ];
     
 ?>
