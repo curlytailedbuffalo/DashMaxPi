@@ -1,6 +1,6 @@
 # DashMaxPi
 
-** **Currently Unfinished** **
+** **Working - WIP** **
 
 A lighttpd PHP dashboard for the raspberry pi.
 
