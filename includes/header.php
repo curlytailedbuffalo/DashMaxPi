@@ -20,46 +20,10 @@
                 <?php
                     if($loggedIn != true){
                         echo "<li><a href='login.php'><i class='fa fa-sign-in'></i> Sign In</a></li>";
-                        }else{
+                    } else {
+                        echo "<li><a href='logout.php'><i class='fa fa-sign-out'></i> Logout</a></li>";
+                    }
                 ?>
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="/assets/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">DashMax User</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="/assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                <p>
-                                    DashMax User - CEO of PiLand
-                                    <small>Member since it mattered.</small>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Sales</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Friends</a>
-                                </div>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                <?php } ?>
             </ul>
         </div>
     </nav>

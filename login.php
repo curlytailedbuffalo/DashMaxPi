@@ -15,6 +15,7 @@ if($_POST["username"] && $_POST["password"]){
 				$_SESSION["loggedIn"] = true;
 				$_SESSION["user"] = $postusername;
 				$_SESSION["name"] = $key;
+                header("Location: index.php");
 			}
 		}
 	}
