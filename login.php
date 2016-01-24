@@ -1,26 +1,9 @@
 <?php
-session_start();
-include("includes/mydb.php");
-include("includes/func.php");
+include("includes/func/func.php");
 
-$users["Chris"] = ["username"=>"theking7426", "password"=>"hard2R3m3mber"];
-	
+if(isset($_POST["username"]) && isset($_POST["password"])){
+	verifyUserPass($_POST["username"], $_POST["password"], "index.php");
 
-if($_POST["username"] && $_POST["password"]){
-	$postusername = $_POST["username"];
-	$postpassword = $_POST["password"];
-	foreach($users as $key=>$value){
-		if(!$_SESSION["loggedIn"]){
-			if($value["username"] == $postusername && $value["password"] == $postpassword){
-				$_SESSION["loggedIn"] = true;
-				$_SESSION["user"] = $postusername;
-				$_SESSION["name"] = $key;
-                header("Location: index.php");
-			}
-		}
-	}
-	
-	
 }
 
 ?>

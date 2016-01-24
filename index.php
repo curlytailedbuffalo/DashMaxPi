@@ -1,77 +1,41 @@
 <?php
-    session_start();
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
     
-    $loggedIn = false;
-    if($_SESSION["loggedIn"] != true){
-        header("Location: login.php");
-    }else{
-        $loggedIn = true;
-    }
-    $myfile = fopen("includes/config/serviceList.txt", "r") or die("Unable to open file!");
-    $myFileContents = fread($myfile,filesize("includes/config/serviceList.txt"));
-    fclose($myfile);
-    $fileContentsArray = json_decode($myFileContents, true);
+    include("includes/func/func.php");
     
-    if($_POST["newservice"]){
-        $fileContentsArray[] = $_POST["newservice"];
-        
-        $myfile = fopen("includes/config/serviceList.txt", "w") or die("Unable to open file!"); 
-        fwrite($myfile, json_encode($fileContentsArray));
-        fclose($myfile);
+    $logged_in = isLoggedIn();
+    
+    if(isset($_POST["newservice"])){
+        addToServiceList($_POST["newservice"]);
     }
     
-    if($_POST["dropservice"]){
-        foreach($fileContentsArray as $key=>$value){
-            if (trim(strtolower($value)) == trim(strtolower($_POST["dropservice"]))){
-                $removeKey = $key;
-            }
-        }
-        unset($fileContentsArray[$removeKey]);
-        
-        $myfile = fopen("includes/config/serviceList.txt", "w") or die("Unable to open file!"); 
-        fwrite($myfile, json_encode($fileContentsArray));
-        fclose($myfile);
+    if(isset($_POST["dropservice"])){
+        removeFromServiceList($_POST["dropservice"]);
     }
     
+    $service_list = getServiceList();
     
-    
-    
-    $google_ping_raw = exec("ping google.com -c 1 | awk '/from/ {print $8}'");
-       
-    $google_ping_raw_arr = explode("=", $google_ping_raw);
-    $google_ping_time1 = trim($google_ping_raw_arr[1]);
-    
-    $google_ping_raw = exec("ping google.com -c 1 | awk '/from/ {print $8}'");
-       
-    $google_ping_raw_arr = explode("=", $google_ping_raw);
-    $google_ping_time2 = trim($google_ping_raw_arr[1]);
-    
-    $google_ping_raw = exec("ping google.com -c 1 | awk '/from/ {print $8}'");
-       
-    $google_ping_raw_arr = explode("=", $google_ping_raw);
-    $google_ping_time3 = trim($google_ping_raw_arr[1]);
-    
-    $gtotal = $google_ping_time1 + $google_ping_time2 + $google_ping_time3;
-    $google_ping_time = $gtotal / 3;
-    
+    $google_ping_time = getGooglePing();
     
 	$online_badge = "<span class='pull-right badge bg-green'>Online</span>";
 	$offline_badge = "<span class='pull-right badge bg-red'>Offline</span>";
 	
 	if($google_ping_time < 20){
-		$google_ping_badge = "<span class='pull-right badge bg-green'>Excellent! - LAN Speeds from Internet</span>";
+		$google_ping_badge = "<span class='pull-right badge bg-green'>Excellent! (<20ms)</span>";
 		$google_ping_class = "progress-bar-success";
         }else if($google_ping_time >= 20 && $google_ping_time < 50){
-		$google_ping_badge = "<span class='pull-right badge bg-blue'>Good</span>";
+		$google_ping_badge = "<span class='pull-right badge bg-blue'>Good (20-50ms)</span>";
 		$google_ping_class = "progress-bar-info";
         }else if($google_ping_time >= 50 && $google_ping_time < 75){
-		$google_ping_badge = "<span class='pull-right badge bg-yellow'>Moderate</span>";
+		$google_ping_badge = "<span class='pull-right badge bg-yellow'>Moderate (50-75ms)</span>";
 		$google_ping_class = "progress-bar-warning";
         }else if($google_ping_time >= 75 && $google_ping_time < 149){
-		$google_ping_badge = "<span class='pull-right badge bg-red'>Slow</span>";
+		$google_ping_badge = "<span class='pull-right badge bg-red'>Slow (75-150ms)</span>";
 		$google_ping_class = "progress-bar-danger";
         }else if($google_ping_time > 150){
-		$google_ping_badge = "<span class='pull-right badge'>Turtle Speed - Check Connection</span>";
+		$google_ping_badge = "<span class='pull-right badge'>Turtle Speed - Check Connection (>150ms)</span>";
 		$google_ping_class = "progress-bar-danger";
     }
 	$google_ping_percentage = ($google_ping_time/150) * 100;
@@ -135,46 +99,6 @@
                     <div class="row">	
                         <div class="col-md-4 col-md-offset-4">
                         
-                            <div id="box-add-service" class="box box-primary">
-                                <div class="box-header with-border">
-                                  <h3 class="box-title">Add a Process</h3>
-
-                                  </div>
-                                <!-- /.box-header -->
-                                <div class="box-body">
-                                  
-                                    <form role="form" action="index.php" method="post">
-                                      <div class="form-group">
-                                        <label for="newservice">Service Name:</label>
-                                        <input type="text" class="form-control" id="newservice" name="newservice" />
-                                      </div>
-                                      <button type="submit" class="btn btn-success">Add Service</button>
-                                    </form>
-                                
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                            
-                            <div id="box-remove-service" class="box box-danger">
-                                <div class="box-header with-border">
-                                  <h3 class="box-title">Add a Process</h3>
-
-                                  </div>
-                                <!-- /.box-header -->
-                                <div class="box-body">
-                                  
-                                    <form role="form" action="index.php" method="post">
-                                      <div class="form-group">
-                                        <label for="dropservice">Service Name:</label>
-                                        <input type="text" class="form-control" id="dropservice" name="dropservice" />
-                                      </div>
-                                      <button type="submit" class="btn btn-danger">Remove Service</button>
-                                    </form>
-                                
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-          
                             <div class="box box-widget widget-user-2">
 								<div class="widget-user-header bg-yellow">
                                     <div class="box-tools pull-right">
@@ -183,9 +107,9 @@
                                           <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown">
                                             <i class="fa fa-wrench"></i></button>
                                           <ul class="dropdown-menu" role="menu">
-                                            <li><a id="add-service" href="#">Add Service</a></li>
+                                            <li><a id="add-service" href="#" data-toggle="modal" data-target="#addServiceModal">Add Service</a></li>
                                             <li class="divider"></li>
-                                            <li><a id="remove-service" href="#">Remove Service</a></li>
+                                            <li><a id="remove-service" href="#" data-toggle="modal" data-target="#dropServiceModal">Remove Service</a></li>
                                           </ul>
                                         </div>
                                         
@@ -213,7 +137,7 @@
                                         <li><a href="#">Google Ping (ms) <?php echo $google_ping_badge; ?></a></li>
                                         
                                         <?php 
-                                            foreach ($fileContentsArray as $b){
+                                            foreach ($service_list as $b){
                                                 $check = exec("ps ax | awk '/$b/ {print $5}' | wc -l");
                                                 
                                                 echo "<li>";
@@ -233,6 +157,56 @@
                     </div><!-- /.row -->
                 </section><!-- /.content -->
             </div><!-- /.content-wrapper -->
+            
+            
+            
+                                      
+            <!-- Modal -->
+            <div class="modal fade" id="addServiceModal" tabindex="-1" role="dialog" aria-labelledby="addServiceModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form role="form" action="index.php" method="post">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="addServiceModalLabel">Add Service</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="newservice">Service Name:</label>
+                                    <input type="text" class="form-control" id="newservice" name="newservice" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success">Add Service</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="dropServiceModal" tabindex="-1" role="dialog" aria-labelledby="addServiceModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form role="form" action="index.php" method="post">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="addServiceModalLabel">Remove Service</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="dropservice">Service Name:</label>
+                                    <input type="text" class="form-control" id="dropservice" name="dropservice" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-warning">Remove Service</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
