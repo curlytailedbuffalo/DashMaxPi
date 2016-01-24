@@ -48,7 +48,7 @@ function isLoggedIn(){
 
 function getServiceList($alt = ".."){
 
-    $myfile = fopen("includes/config/serviceList.txt", "r") or die("Unable to open file!");
+    $myfile = fopen("includes/config/serviceList.txt", "r") or die("Unable to open file!"); 
     $myFileContents = fread($myfile,filesize("includes/config/serviceList.txt"));
     fclose($myfile);
     return json_decode($myFileContents, true);
