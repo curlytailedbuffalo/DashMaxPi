@@ -7,17 +7,15 @@
     
     $logged_in = isLoggedIn();
     
-    $service_list = getServiceList();
+    $service_list = getServiceListSession();
     
     if(isset($_POST["newservice"])){
-        addToServiceList($_POST["newservice"]);
-        $service_list[] = $_POST["newservice"];
+        $service_list = addToServiceList($_POST["newservice"]);
     }
     
     if(isset($_POST["dropservice"])){
-        $service_list = json_decode(removeFromServiceList($_POST["dropservice"]), true);
+        $service_list = removeFromServiceList($_POST["dropservice"]);
     }
-    
     
     $google_ping_time = getGooglePing();
     

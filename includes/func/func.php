@@ -14,7 +14,7 @@ function passwordMaker($password){
 }
 
 function checkPassword($given, $actual){
-    if (password_verify($given, $password)) {
+    if (password_verify($given, $actual)) {
         return true;
     } else {
         return false;
@@ -46,6 +46,7 @@ function loadConfig($config){
 
     $_SESSION['username'] = $config->username;
     $_SESSION['enable_ping'] = $config->enable_ping;
+    getServiceListFile();
     return true;
 }
 function isLoggedIn(){
@@ -63,24 +64,36 @@ function logout(){
     unset($_SESSION["user"]);
     header("Location: index.php");
 }
-function getServiceList(){
+function getServiceListFile(){
 
     $myfile = fopen("includes/config/serviceList.txt", "r") or die("Unable to open file!"); 
     $myFileContents = fread($myfile,filesize("includes/config/serviceList.txt"));
     fclose($myfile);
-    return json_decode($myFileContents, true);
+    $_SESSION['svl'] = json_decode($myFileContents, true);
+    return true;
+}
+
+function getServiceListSession(){
+
+    return $_SESSION['svl'];
+}
+
+function reloadServiceList($newList){
+    $_SESSION['svl'] = $newList;
+    return $_SESSION['svl'];
 }
 
 function addToServiceList($newService){
-    $serviceList = getServiceList();
+    $serviceList = getServiceListSession();
     $serviceList[] = $newService;
     $myfile = fopen("includes/config/serviceList.txt", "w") or die("Unable to open file!"); 
     fwrite($myfile, json_encode($serviceList));
     fclose($myfile);
+    return reloadServiceList($serviceList);
 }
 
 function removeFromServiceList($service){
-    $serviceList = getServiceList();
+    $serviceList = getServiceListSession();
     foreach($serviceList as $key=>$value){
         if (trim(strtolower($value)) == trim(strtolower($_POST["dropservice"]))){
             $removeKey = $key;
@@ -90,7 +103,7 @@ function removeFromServiceList($service){
     $myfile = fopen("includes/config/serviceList.txt", "w") or die("Unable to open file!"); 
     fwrite($myfile, json_encode($serviceList));
     fclose($myfile);
-    return json_encode($serviceList);
+    return reloadServiceList($serviceList);
 }
 
 function getGooglePing(){
